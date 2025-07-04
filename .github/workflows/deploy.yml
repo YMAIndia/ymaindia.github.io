@@ -1,37 +1,38 @@
-name: Build and Deploy to GitHub Pages
+name: Deploy Next.js to GitHub Pages
 
 on:
   push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+    branches: [ source ] # Trigger when you push changes to your source branch
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    permissions: # <--- ADD THIS BLOCK
-      contents: write # <--- THIS IS THE KEY PERMISSION
-    
+    permissions:
+      contents: write # Needed to push to the 'main' branch of THIS repository
+
     steps:
-    - name: Checkout
+    - name: Checkout Source Branch
       uses: actions/checkout@v4
-      
+      with:
+        ref: source # Checkout the 'source' branch for building
+
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
         node-version: '18'
         cache: 'npm'
-        
+
     - name: Install dependencies
       run: npm ci
-      
-    - name: Build
+
+    - name: Build Next.js
       run: npm run build
-      
-    - name: Deploy to GitHub Pages
+
+    - name: Deploy to GitHub Pages (Main Branch)
       uses: peaceiris/actions-gh-pages@v3
-      if: github.ref == 'refs/heads/main'
+      if: github.ref == 'refs/heads/source' # Only deploy when pushing to the 'source' branch
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./out
-        # cname: yourdomain.com # Replace with your custom domain if you have one
+        github_token: ${{ secrets.GITHUB_TOKEN }} # GITHUB_TOKEN is sufficient here as it's the same repo
+        publish_dir: ./out # Your Next.js build output directory
+        publish_branch: main # <--- Publish to the 'main' branch
+        # cname: yourdomain.com # Only if you're using a custom domain
