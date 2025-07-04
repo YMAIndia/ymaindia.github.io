@@ -1,0 +1,195 @@
+/* Ensure global variables are accessible, no need for :root here */
+
+.hero {
+  position: relative;
+  min-height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  overflow: hidden;
+  margin-top: 0;
+  padding-top: 0;
+  /* Initial state for the entrance animation */
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity var(--transition-slow), transform var(--transition-slow);
+}
+
+.hero.withNavPadding {
+  padding-top: 120px; /* match header height for desktop */
+}
+
+@media (max-width: 768px) {
+  .hero.withNavPadding {
+    padding-top: 100px; /* match header height for mobile */
+  }
+}
+
+/* State for when the hero component becomes visible */
+.hero.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Dark overlay for text readability, adjusted to your palette */
+.hero::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  /* Using a dark transparent color for the overlay */
+  background: rgba(0, 0, 0, 0.7); /* A neutral dark overlay */
+  /* Or if you want it to align with primary color but still be dark: */
+  /* background: color-mix(in srgb, var(--primary-dark) 70%, black 30%); */
+  /* background: rgba(var(--primary-dark-rgb-red), var(--primary-dark-rgb-green), var(--primary-dark-rgb-blue), 0.6); */
+  /* Given current variables, a fixed rgba or a carefully chosen primary variant is best */
+  z-index: var(--z-normal); /* Using global z-index */
+}
+
+.meshGradient {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  /* Using your global mesh-gradient utility's colors */
+  background: linear-gradient(
+    135deg,
+    var(--primary) 0%,
+    var(--secondary) 25%,
+    var(--accent) 50%,
+    var(--primary-light) 75%,
+    var(--secondary-dark) 100%
+  );
+  background-size: 400% 400%; /* For the animation */
+  animation: gradientShift 15s ease infinite; /* Uses your existing animation */
+  z-index: var(--z-negative); /* Below the overlay and content */
+  /* *** THE KEY FIX: Significant blur for "mesh" effect *** */
+  filter: blur(100px); /* Increased blur drastically for soft blobs */
+  opacity: 0.8; /* Slightly reduce opacity for better blending */
+}
+
+/* Animation definition for the mesh gradient */
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.content {
+  position: relative;
+  z-index: calc(var(--z-normal) + 1); /* Ensure content is above the overlay */
+  max-width: 900px; /* Slightly wider content area */
+  padding: 0 var(--spacing-lg); /* Uses spacing variable */
+  color: var(--background); /* Use background color (white) for text on dark hero */
+  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.4); /* Clear shadow for white text */
+}
+
+.title {
+  font-family: var(--font-heading); /* Uses Montserrat */
+  font-size: 4rem; /* Adjusted for impact */
+  font-weight: 800;
+  margin-bottom: var(--spacing-lg);
+  text-shadow: 0 5px 18px rgba(255, 255, 255, 0.2); /* Stronger shadow */
+  letter-spacing: -0.03em; /* Tighten for large headings */
+  color: #ffffff;
+}
+
+.subtitle {
+  font-family: var(--font-body); /* Uses Lora */
+  font-size: 1.4rem; /* Larger subtitle */
+  margin-bottom: var(--spacing-xxl);
+  opacity: 0.95;
+  line-height: 1.6;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.25); /* Softer shadow */
+}
+
+.cta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  background: var(--primary);
+  color: var(--background);
+  padding: var(--spacing-md) var(--spacing-xl);
+  border-radius: var(--radius-full);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.2rem;
+  box-shadow: 0 6px 20px rgba(4, 10, 46, 0.15);
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  position: relative;
+  overflow: hidden;
+  letter-spacing: 0.03em;
+}
+
+.cta:hover {
+  background: var(--primary-light);
+  color: var(--background);
+  transform: translateY(-3px) scale(1.04);
+  box-shadow: 0 10px 30px rgba(4, 10, 46, 0.25);
+}
+
+.arrow {
+  transition: transform var(--transition-fast);
+  margin-left: var(--spacing-xs); /* Give some space */
+}
+
+.cta:hover .arrow {
+  transform: translateX(6px); /* More pronounced arrow movement */
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 992px) {
+  .title {
+    font-size: 3.5rem;
+  }
+  .subtitle {
+    font-size: 1.3rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero {
+    min-height: 100vh;
+  }
+  .title {
+    font-size: 2.8rem;
+  }
+  .subtitle {
+    font-size: 1.2rem;
+    margin-bottom: var(--spacing-xl);
+  }
+  .cta {
+    padding: var(--spacing-sm) var(--spacing-lg);
+    font-size: 1.1rem;
+  }
+  .content {
+    padding: 0 var(--spacing-md);
+  }
+}
+
+@media (max-width: 480px) {
+  .title {
+    font-size: 2.2rem;
+  }
+  .subtitle {
+    font-size: 1.05rem;
+    margin-bottom: var(--spacing-lg);
+  }
+  .cta {
+    font-size: 1rem;
+    padding: var(--spacing-sm) var(--spacing-md);
+  }
+}
