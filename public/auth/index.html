@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Authenticating...</title>
+</head>
+<body>
+  <script>
+    // For local development, we'll use a simple redirect
+    // In production, this would be handled by a server
+    
+    // Check if we have a token in the URL
+    if (window.location.hash) {
+      const hash = window.location.hash.substring(1);
+      const params = new URLSearchParams(hash);
+      const accessToken = params.get('access_token');
+      
+      if (accessToken) {
+        // Store the token
+        localStorage.setItem('netlify-cms-token', accessToken);
+        // Redirect back to admin
+        window.location.href = '/admin/';
+      }
+    }
+    
+    // If no token, redirect to GitHub OAuth
+    const clientId = 'your-github-oauth-client-id'; // You'll need to create this
+    const redirectUri = encodeURIComponent('http://localhost:3000/auth/');
+    const scope = encodeURIComponent('repo');
+    
+    const authUrl = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}`;
+    
+    // For now, just show a message
+    document.body.innerHTML = `
+      <h2>Local Development Auth</h2>
+      <p>For local development, you need to:</p>
+      <ol>
+        <li>Create a GitHub OAuth App at <a href="https://github.com/settings/developers" target="_blank">GitHub Developer Settings</a></li>
+        <li>Set the callback URL to: <code>http://localhost:3000/auth/</code></li>
+        <li>Update the client ID in this file</li>
+      </ol>
+      <p><a href="${authUrl}">Login with GitHub</a></p>
+    `;
+  </script>
+</body>
+</html> 
