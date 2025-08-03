@@ -20,18 +20,21 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: '18'
-        cache: 'pnpm' # <-- Crucial: This configures caching specifically for pnpm
+        cache: 'pnpm'
 
+    # --- FIX STARTS HERE ---
     - name: Install PNPM
-      uses: pnpm/action-setup@v3
+      uses: pnpm/action-setup@v3 # <--- Move this step UP, right after setup-node
       with:
-        version: 9 # You can specify a version, e.g., 8 or 9
+        version: 9 # Or specify your desired pnpm version
 
     - name: Install dependencies
-      run: pnpm install --frozen-lockfile # <-- The pnpm equivalent of 'npm ci'
+      # This step now runs *after* pnpm has been installed and added to PATH
+      run: pnpm install --frozen-lockfile
+    # --- FIX ENDS HERE ---
 
     - name: Build Next.js
-      run: pnpm build # <-- The pnpm equivalent of 'npm run build'
+      run: pnpm build
 
     - name: Deploy to GitHub Pages (Main Branch)
       uses: peaceiris/actions-gh-pages@v3
