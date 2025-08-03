@@ -16,31 +16,25 @@ jobs:
       with:
         ref: source # Checkout the 'source' branch for building
 
-    - name: Setup Node.js and cache PNPM dependencies
+    - name: Setup Node.js and cache NPM dependencies
       uses: actions/setup-node@v4
       with:
-        node-version: '18'
-        cache: 'pnpm'
-
-    # --- FIX STARTS HERE ---
-    - name: Install PNPM
-      uses: pnpm/action-setup@v3 # <--- Move this step UP, right after setup-node
-      with:
-        version: 9 # Or specify your desired pnpm version
+        node-version: '18' # Or your desired Node.js LTS version (e.g., '20')
+        cache: 'npm' # <-- Ensure this is 'npm' for npm caching
 
     - name: Install dependencies
-      # This step now runs *after* pnpm has been installed and added to PATH
-      run: pnpm install --frozen-lockfile
-    # --- FIX ENDS HERE ---
+      # Use npm ci for a clean and reliable installation in CI environments
+      run: npm ci
 
     - name: Build Next.js
-      run: pnpm build
+      # Assuming your package.json has a "build" script
+      run: npm run build
 
     - name: Deploy to GitHub Pages (Main Branch)
       uses: peaceiris/actions-gh-pages@v3
-      if: github.ref == 'refs/heads/source'
+      if: github.ref == 'refs/heads/source' # Only deploy when pushing to the 'source' branch
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./out
-        publish_branch: main
-        # cname: yourdomain.com
+        github_token: ${{ secrets.GITHUB_TOKEN }} # GITHUB_TOKEN is sufficient here as it's the same repo
+        publish_dir: ./out # Your Next.js build output directory
+        publish_branch: main # <--- Publish to the 'main' branch
+        # cname: yourdomain.com # Only if you're using a custom domain
