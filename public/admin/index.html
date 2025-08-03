@@ -6,7 +6,23 @@
   <title>Content Manager - YMA India Blog</title>
 </head>
 <body>
-  <!-- Include the script that builds the page and powers Decap CMS -->
-  <script src="https://unpkg.com/decap-cms@latest/dist/decap-cms.js"></script>
+  <div id="nc-root"></div>
+  
+  <script>
+    // Simple CMS loader
+    const script = document.createElement('script');
+    script.src = '/node_modules/decap-cms/dist/decap-cms.js';
+    script.onload = function() {
+      console.log('CMS loaded successfully');
+    };
+    script.onerror = function() {
+      console.error('Failed to load CMS');
+      // Fallback to CDN
+      const fallbackScript = document.createElement('script');
+      fallbackScript.src = 'https://unpkg.com/decap-cms@latest/dist/decap-cms.js';
+      document.head.appendChild(fallbackScript);
+    };
+    document.head.appendChild(script);
+  </script>
 </body>
 </html>
