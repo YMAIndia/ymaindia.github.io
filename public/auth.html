@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Authenticating...</title>
+</head>
+<body>
+  <script>
+    // Handle OAuth callback
+    if (window.location.hash) {
+      const hash = window.location.hash.substring(1);
+      const params = new URLSearchParams(hash);
+      const accessToken = params.get('access_token');
+      const tokenType = params.get('token_type');
+      
+      if (accessToken) {
+        // Store the token
+        localStorage.setItem('netlify-cms-token', accessToken);
+        localStorage.setItem('netlify-cms-token-type', tokenType);
+        
+        // Redirect back to admin
+        window.location.href = '/admin/';
+      } else {
+        // Handle error
+        console.error('No access token received');
+        window.location.href = '/admin/';
+      }
+    } else {
+      // No hash, redirect to admin
+      window.location.href = '/admin/';
+    }
+  </script>
+  <p>Authenticating...</p>
+</body>
+</html> 
