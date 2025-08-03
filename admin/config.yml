@@ -2,7 +2,8 @@ backend:
   name: github
   repo: YMAIndia/ymaindia.github.io
   branch: main
-  proxy_url: https://netlify-cms-proxy.netlify.app
+  auth_type: implicit
+  app_id: 1722026
 
 media_folder: "public/images"
 public_folder: "/images"
