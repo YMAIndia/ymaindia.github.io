@@ -5,7 +5,7 @@ export default function AdminTest() {
   useEffect(() => {
     // Load Decap CMS
     const script = document.createElement('script')
-    script.src = 'https://unpkg.com/decap-cms@2.15.0/dist/decap-cms.js'
+    script.src = 'https://unpkg.com/decap-cms@latest/dist/decap-cms.js'
     script.onload = () => {
       console.log('Decap CMS loaded successfully')
     }
