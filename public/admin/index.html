@@ -4,9 +4,12 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Content Manager - YMA India Blog</title>
+  
+  <!-- Add the link to your config file. This is good practice. -->
+  <link href="config.yml" type="text/yaml" rel="cms-config-url" />
 </head>
 <body>
-  <!-- Include the script that builds the page and powers Decap CMS -->
-  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+  <!-- Use the decap-cms-app script which includes the authenticator -->
+  <script src="https://unpkg.com/decap-cms-app@^3.0.0/dist/decap-cms-app.js"></script>
 </body>
 </html>
