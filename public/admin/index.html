@@ -3,22 +3,13 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Content Manager - YMA India Blog</title>
+  <title>Content Manager</title>
+  
+  <!-- 👇 Sveltia CMS CSS (for the new look) 👇 -->
+  <link rel="stylesheet" href="https://unpkg.com/@sveltia/cms@latest/dist/sveltia-cms.css" />
 </head>
 <body>
-  <div id="nc-root"></div>
-  
-  <script>
-    // Simple CMS loader - use CDN directly
-    const script = document.createElement('script');
-    script.src = 'https://unpkg.com/decap-cms@latest/dist/decap-cms.js';
-    script.onload = function() {
-      console.log('CMS loaded successfully');
-    };
-    script.onerror = function() {
-      console.error('Failed to load CMS from CDN');
-    };
-    document.head.appendChild(script);
-  </script>
+  <!-- 👇 Sveltia CMS JavaScript 👇 -->
+  <script src="https://unpkg.com/@sveltia/cms@latest/dist/sveltia-cms.js"></script>
 </body>
 </html>
