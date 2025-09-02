@@ -37,4 +37,4 @@ jobs:
         github_token: ${{ secrets.GITHUB_TOKEN }} # GITHUB_TOKEN is sufficient here as it's the same repo
         publish_dir: ./out # Your Next.js build output directory
         publish_branch: main # <--- Publish to the 'main' branch
-        # cname: yourdomain.com # Only if you're using a custom domain
+        cname: ymaindia.com # Only if you're using a custom domain
