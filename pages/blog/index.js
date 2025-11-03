@@ -96,8 +96,11 @@ export async function getStaticProps() {
 
     return {
       slug,
-      frontmatter,
-    }
+      frontmatter: {
+        ...frontmatter,
+        date: frontmatter.date.toString(),
+      },
+    };
   })
 
   return {

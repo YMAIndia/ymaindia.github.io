@@ -193,7 +193,10 @@ export async function getStaticProps({ params: { slug } }) {
 
   return {
     props: {
-      frontmatter,
+      frontmatter: {
+        ...frontmatter, // Keep all other frontmatter properties
+        date: frontmatter.date.toString(), // Convert the date to a string
+      },
       content,
       slug,
     },
